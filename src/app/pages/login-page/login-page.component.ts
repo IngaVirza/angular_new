@@ -24,7 +24,9 @@ export class LoginPageComponent {
   onSubmit() {
     if (this.form.value) {
       //@ts-ignore
-      this.authService.login(this.form.value);
+      this.authService.login(this.form.value).subscribe((res) => {
+        console.log(res);
+      });
     }
   }
 }
