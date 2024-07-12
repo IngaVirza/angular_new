@@ -1,14 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { TokenResponse } from './auth.interface';
-import { tap } from 'rxjs';
+import { catchError, tap, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   http: HttpClient = inject(HttpClient);
+  router = inject(Router);
   cookeService = inject(CookieService);
   baseApiUrl: string = 'https://icherniakov.ru/yt-course/auth/';
   token: string | null = null;
@@ -17,6 +19,7 @@ export class AuthService {
   get isAuth() {
     if (!this.token) {
       this.token = this.cookeService.get('token');
+      this.refreshToken = this.cookeService.get('refreshToken');
     }
     return !!this.token;
   }
@@ -26,14 +29,37 @@ export class AuthService {
     fd.append('password', payload.password);
     // return this.http.post(`${this.baseApiUrl}token`, fd);
 
-    return this.http.post<TokenResponse>(`${this.baseApiUrl}token`, fd).pipe(
-      tap((val) => {
-        this.token = val.access_token;
-        this.refreshToken = val.refresh_token;
+    return this.http
+      .post<TokenResponse>(`${this.baseApiUrl}token`, fd)
+      .pipe(tap((val: TokenResponse) => this.saveTokens(val)));
+  }
 
-        this.cookeService.set('token', this.token);
-        this.cookeService.set('refreshToken', this.refreshToken);
+  refreshAuthToken() {
+    return this.http
+      .post<TokenResponse>(`${this.baseApiUrl}refresh`, {
+        refresh_token: this.refreshAuthToken,
       })
-    );
+      .pipe(
+        tap((val: TokenResponse) => this.saveTokens(val)),
+        catchError((err) => {
+          this.logout();
+          return throwError(err);
+        })
+      );
+  }
+
+  logout() {
+    this.cookeService.deleteAll();
+    this.token = null;
+    this.refreshToken = null;
+    this.router.navigate(['/login']);
+  }
+
+  saveTokens(res: TokenResponse) {
+    this.token = res.access_token;
+    this.refreshToken = res.refresh_token;
+
+    this.cookeService.set('token', this.token);
+    this.cookeService.set('refreshToken', this.refreshToken);
   }
 }
