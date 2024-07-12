@@ -7,7 +7,7 @@ import { Profile } from '../intrfaces/profile.interface';
 })
 export class ProfileService {
   http: HttpClient = inject(HttpClient);
-  baseApiUrl: string = 'https://ichererniakov.ru/yt-course/';
+  baseApiUrl: string = 'https://icherniakov.ru/yt-course/';
 
   getTestAccounts() {
     return this.http.get<Profile[]>(`${this.baseApiUrl}account/test_accounts`);
