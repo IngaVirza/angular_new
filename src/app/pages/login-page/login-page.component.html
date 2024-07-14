@@ -12,12 +12,60 @@
 
   <label class="tt-control-label mb32">
     Пароль
-    <input
-      formControlName="password"
-      class="tt-input"
-      type="text"
-      placeholder="Введите пароль"
-    />
+    <div class="password-input">
+      <input
+        formControlName="password"
+        class="tt-input"
+        [type]="isPasswordVisible() ? 'text' : 'password'"
+        placeholder="Введите пароль"
+      />
+      <button
+        class="password-eye-btn"
+        [class.active]="isPasswordVisible()"
+        (click)="isPasswordVisible.set(!isPasswordVisible())"
+      >
+        <svg
+          width="19"
+          height="17"
+          id="Capa_1"
+          enable-background="new 0 0 512 512"
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g>
+            <path
+              d="m9.249 245.879c1.018-1.113 23.146-25.143 59.611-51.547v-125.472h374.28v125.472c36.465 26.404 58.593 50.434 59.611 51.547l9.249 10.116v-255.995h-512v255.995z"
+              fill="currentColor"
+            ></path>
+            <circle cx="256" cy="256" r="23.456" fill="currentColor"></circle>
+            <path
+              d="m98.86 174.387c52.693-31.981 106.651-48.798 157.14-48.798s104.447 16.817 157.14 48.798v-75.527h-314.28z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="m256 155.631c-55.344 0-100.369 45.025-100.369 100.369s45.025 100.369 100.369 100.369 100.369-45.025 100.369-100.369-45.025-100.369-100.369-100.369zm0 153.825c-29.476 0-53.456-23.98-53.456-53.456s23.98-53.456 53.456-53.456 53.456 23.98 53.456 53.456-23.98 53.456-53.456 53.456z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="m502.751 266.121c-1.018 1.113-23.146 25.143-59.611 51.547v125.472h-374.28v-125.472c-36.465-26.404-58.593-50.434-59.611-51.547l-9.249-10.116v255.995h512v-255.995z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="m98.368 301.696c14.195 9.567 31.391 19.833 50.751 28.863-14.794-21.143-23.488-46.853-23.488-74.559s8.694-53.416 23.488-74.559c-19.359 9.03-36.556 19.296-50.751 28.863-25.857 17.425-45.709 35.039-56.868 45.696 11.156 10.655 31.009 28.269 56.868 45.696z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="m413.632 210.304c-14.195-9.567-31.392-19.833-50.751-28.863 14.794 21.143 23.488 46.853 23.488 74.559s-8.694 53.416-23.488 74.559c19.359-9.03 36.556-19.296 50.75-28.863 25.857-17.426 45.709-35.039 56.868-45.696-11.158-10.657-31.01-28.271-56.867-45.696z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="m413.14 337.613c-52.693 31.981-106.651 48.798-157.14 48.798s-104.447-16.817-157.14-48.798v75.527h314.28z"
+              fill="currentColor"
+            ></path>
+          </g>
+        </svg>
+      </button>
+    </div>
   </label>
   <button class="btn btn-shadow" type="submit">Войти</button>
 </form>
